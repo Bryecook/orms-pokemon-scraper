@@ -12,10 +12,16 @@ attr_accessor :id, :name, :type, :db
         @db=db
     end
 
-    def self.save(name, type, db)
+    def self.save(pokemon_name, pokemon_type, db)
     
-       "INSERT INTO pokemon (name, type, db) VALUES ('name','type','db');"
+        db.execute("INSERT INTO pokemon (name, type) VALUES (?,?)", [pokemon_name, pokemon_type])
         
+    end
+
+    def self.find(pokemon_id, db)
+        array=db.execute("SELECT * FROM pokemon WHERE id = (?)", [pokemon_id]).flatten
+        #binding.pry
+        Pokemon.new(id:pokemon_id, name:array[1], type:array[2], db:db)
     end
 
 end
